@@ -1,0 +1,14 @@
+<section class="card">
+  <h1>{{ title }}</h1>
+  <ul class="task">
+    @for (task of taskList(); track $index) {
+      <li class="task-item">{{ task.description }}</li>
+    } @empty {
+      <li>No tasks yet</li>
+    }
+  </ul>
+  <form>
+    <input [formField]="taskForm.description" placeholder="Enter task description" type="text">
+    <button (click)="addTask()" type="button">Add task</button>
+  </form>
+</section>
