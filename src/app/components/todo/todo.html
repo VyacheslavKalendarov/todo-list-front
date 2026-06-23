@@ -1,14 +1,10 @@
 <section class="card">
   <h1>{{ title }}</h1>
-  <ul class="task">
-    @for (task of taskList(); track $index) {
-      <li class="task-item">{{ task.description }}</li>
-    } @empty {
-      <li>No tasks yet</li>
-    }
-  </ul>
+  <app-todo-list-item (removeTaskEvent)="removeTask($event)" [taskList]="taskList()" />
   <form>
-    <input [formField]="taskForm.description" placeholder="Enter task description" type="text">
-    <button (click)="addTask()" type="button">Add task</button>
+    <input [formField]="taskForm.text" matInput placeholder="Enter task description" type="text">
+    <button (click)="addTask()" [disabled]="!taskForm.text().valid()" class="button button--add" type="button">Add
+      task
+    </button>
   </form>
 </section>
