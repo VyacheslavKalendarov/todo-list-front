@@ -1,16 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
-import { TodoListItem } from '../todo-list-item/todo-list-item';
 import { MatInput } from '@angular/material/input';
-
-export interface Task {
-  id: number;
-  text: string;
-}
+import { Task } from '../../models/task.model';
+import { TodoList } from '../todo-list/todo-list';
 
 @Component({
   selector: 'app-todo',
-  imports: [FormField, TodoListItem, MatInput],
+  imports: [FormField, TodoList, MatInput],
   templateUrl: './todo.html',
   styleUrl: './todo.scss',
 })
@@ -34,16 +30,16 @@ export class Todo {
     required(path.text);
   });
 
-  protected readonly addTask = () => {
+  protected addTask() {
     const description = this.task().text.trim();
     if (!description) return;
 
     this.taskList.update((tasks) => [
       ...tasks,
-      { id: Math.max(...tasks.map((task) => task.id)) + 1, text: description },
+      { id: Math.max(0, ...tasks.map((task) => task.id)) + 1, text: description },
     ]);
     this.task.set({ id: 0, text: '' });
-  };
+  }
 
   protected removeTask(id: number) {
     this.taskList.update((tasks) => tasks.filter((task) => task.id !== id));

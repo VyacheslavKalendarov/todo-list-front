@@ -1,0 +1,7 @@
+<ul class="task">
+  @for (task of taskList(); track task.id) {
+    <app-todo-list-item (removeTaskEvent)="removeTaskEvent.emit($event)" [task]="task" />
+  } @empty {
+    <li>No tasks yet</li>
+  }
+</ul>
