@@ -10,5 +10,5 @@ import { TodoListItem } from '../todo-list-item/todo-list-item';
 })
 export class TodoList {
   public readonly taskList = input.required<Task[]>();
-  protected readonly removeTaskEvent = output<number>();
+  public readonly removeTask = output<number>();
 }

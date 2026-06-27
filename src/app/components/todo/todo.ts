@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { form, FormField, required } from '@angular/forms/signals';
+import { form, FormField, requiredError, validate } from '@angular/forms/signals';
 import { MatInput } from '@angular/material/input';
 import { Task } from '../../models/task.model';
 import { TodoList } from '../todo-list/todo-list';
@@ -27,7 +27,13 @@ export class Todo {
   ]);
 
   protected readonly taskForm = form(this.task, (path) => {
-    required(path.text);
+    validate(path.text, ({ value }) => {
+      if (value().trim().length === 0) {
+        return requiredError();
+      }
+
+      return null;
+    });
   });
 
   protected addTask() {

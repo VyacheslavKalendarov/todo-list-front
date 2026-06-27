@@ -1,6 +1,6 @@
 <section class="card">
   <h1>{{ title }}</h1>
-  <app-todo-list (removeTaskEvent)="removeTask($event)" [taskList]="taskList()" />
+  <app-todo-list (removeTask)="removeTask($event)" [taskList]="taskList()" />
   <form>
     <input [formField]="taskForm.text" matInput placeholder="Enter task description" type="text" />
     <button
