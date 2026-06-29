@@ -1,12 +1,17 @@
-<ul class="task">
-  @for (task of taskList(); track task.id) {
-    <li
-      (removeTask)="removeTask.emit($event)"
-      [task]="task"
-      app-todo-list-item
-      class="task-item"
-    ></li>
-  } @empty {
-    <li>No tasks yet</li>
-  }
-</ul>
+@if (isLoading()) {
+  <img alt="Loading..." class="loading" src="https://media.giphy.com/media/emySgWo0iBKWqni1wR/giphy.gif" />
+} @else {
+  <ul class="task">
+    @for (task of taskList(); track task.id) {
+      <li
+        (removeTask)="removeTask.emit($event)"
+        [task]="task"
+        app-todo-list-item
+        class="task-item"
+      ></li>
+    } @empty {
+      <li>No tasks yet</li>
+    }
+  </ul>
+}
+

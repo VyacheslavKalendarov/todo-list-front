@@ -1,0 +1,24 @@
+host {
+  display: contents;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button--add {
+  background-color: #125207;
+}
+
+.button--add[disabled] {
+  opacity: 0.5;
+}
+
+.button--delete {
+  background-color: #ff0000;
+}

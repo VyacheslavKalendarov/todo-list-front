@@ -1,4 +1,3 @@
 {{ task().text }}
-<button (click)="removeTask.emit(task().id)" class="button button--delete" type="button">
-  Delete
-</button>
+
+<ui-button (click)="removeTask.emit(task().id)" [title]="'Delete'" [variant]="'delete'"></ui-button>
