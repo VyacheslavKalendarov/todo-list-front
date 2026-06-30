@@ -5,9 +5,9 @@
     <input [formField]="taskForm.text" matInput placeholder="Enter task description" type="text" />
     <ui-button
       (click)="addTask()"
+      [appearance]="'primary'"
       [disabled]="taskForm.text().invalid()"
       [title]="'Add task'"
-      [variant]="'add'"
     />
   </form>
 </section>

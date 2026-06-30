@@ -1,7 +1,7 @@
 <button
-  [class]="'button button--' + variant()"
+  [class]="'button button--' + appearance()"
   [disabled]="disabled()"
-  type="button"
+  [type]="type()"
 >
   {{ title() }}
 </button>
