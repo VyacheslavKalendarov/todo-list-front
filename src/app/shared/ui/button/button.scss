@@ -7,6 +7,15 @@
   cursor: pointer;
 }
 
-.button--delete {
+.button[disabled] {
+  opacity: 0.5;
+}
+
+.button--primary {
+  background-color: #125207;
+}
+
+
+.button--primary-destructive {
   background-color: #ff0000;
 }

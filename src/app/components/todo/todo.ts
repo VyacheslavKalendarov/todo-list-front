@@ -3,10 +3,11 @@ import { form, FormField, requiredError, validate } from '@angular/forms/signals
 import { MatInput } from '@angular/material/input';
 import { Task } from '../../models/task.model';
 import { TodoList } from '../todo-list/todo-list';
+import { Button } from '../../shared/ui/button/button';
 
 @Component({
   selector: 'app-todo',
-  imports: [FormField, TodoList, MatInput],
+  imports: [FormField, TodoList, MatInput, Button],
   templateUrl: './todo.html',
   styleUrl: './todo.scss',
 })

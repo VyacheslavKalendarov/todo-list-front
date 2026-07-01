@@ -3,13 +3,11 @@
   <app-todo-list (removeTask)="removeTask($event)" [taskList]="taskList()" />
   <form>
     <input [formField]="taskForm.text" matInput placeholder="Enter task description" type="text" />
-    <button
+    <ui-button
       (click)="addTask()"
+      [appearance]="'primary'"
       [disabled]="taskForm.text().invalid()"
-      class="button button--add"
-      type="button"
-    >
-      Add task
-    </button>
+      [title]="'Add task'"
+    />
   </form>
 </section>
