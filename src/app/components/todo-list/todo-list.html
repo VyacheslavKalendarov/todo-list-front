@@ -4,10 +4,15 @@
   <ul class="task">
     @for (task of taskList(); track task.id) {
       <li
+        (click)="selectedItemId.set(task.id)"
+        (keydown.enter)="removeTask.emit(task.id)"
         (removeTask)="removeTask.emit($event)"
+        [appTooltip]="task.description"
+        [class.selected]="selectedItemId() === task.id"
         [task]="task"
         app-todo-list-item
         class="task-item"
+        tabindex="0"
       ></li>
     } @empty {
       <li>No tasks yet</li>

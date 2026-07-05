@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { form, FormField, requiredError, validate } from '@angular/forms/signals';
 import { MatInput } from '@angular/material/input';
 import { Task } from '../../models/task.model';
@@ -14,18 +14,45 @@ import { Button } from '../../shared/ui/button/button';
 export class Todo {
   protected readonly title = 'To-Do List';
 
+  protected selectedItemId = signal<number | null>(null);
+
   protected readonly task = signal<Task>({
     id: 0,
     text: '',
+    description: '',
   });
 
   protected readonly taskList = signal<Task[]>([
-    { id: 1, text: 'Learn Angular' },
-    { id: 2, text: 'Learn React' },
-    { id: 3, text: 'Learn Vue' },
-    { id: 4, text: 'Learn Svelte' },
-    { id: 5, text: 'Learn TypeScript' },
+    {
+      id: 1,
+      text: 'Learn Angular',
+      description: 'lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+    },
+    {
+      id: 2,
+      text: 'Learn React',
+      description: 'Lore ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+    },
+    {
+      id: 3,
+      text: 'Learn Vue',
+      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+    },
+    {
+      id: 4,
+      text: 'Learn Svelte',
+      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+    },
+    {
+      id: 5,
+      text: 'Learn TypeScript',
+      description: 'Lore ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+    },
   ]);
+
+  protected selectedTask = computed(
+    () => this.taskList().find((task) => task.id === this.selectedItemId()) ?? null,
+  );
 
   protected readonly taskForm = form(this.task, (path) => {
     validate(path.text, ({ value }) => {
@@ -35,17 +62,29 @@ export class Todo {
 
       return null;
     });
+
+    validate(path.description, ({ value }) => {
+      if (value().trim().length === 0) {
+        return requiredError();
+      }
+
+      return null;
+    });
   });
 
   protected addTask() {
-    const description = this.task().text.trim();
-    if (!description) return;
+    const title = this.task().text.trim();
+    const description = this.task().description.trim();
 
     this.taskList.update((tasks) => [
       ...tasks,
-      { id: Math.max(0, ...tasks.map((task) => task.id)) + 1, text: description },
+      {
+        id: Math.max(0, ...tasks.map((task) => task.id)) + 1,
+        text: title,
+        description: description,
+      },
     ]);
-    this.task.set({ id: 0, text: '' });
+    this.task.set({ id: 0, text: '', description: '' });
   }
 
   protected removeTask(id: number) {
