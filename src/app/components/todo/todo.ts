@@ -26,27 +26,27 @@ export class Todo {
     {
       id: 1,
       text: 'Learn Angular',
-      description: 'lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+      description: 'Обучение Ангулар',
     },
     {
       id: 2,
       text: 'Learn React',
-      description: 'Lore ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+      description: 'Обучение Реакт',
     },
     {
       id: 3,
       text: 'Learn Vue',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+      description: 'Обучение вью',
     },
     {
       id: 4,
       text: 'Learn Svelte',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+      description: 'Обучение свелт',
     },
     {
       id: 5,
       text: 'Learn TypeScript',
-      description: 'Lore ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+      description: 'Обучение тайпскрипт',
     },
   ]);
 
@@ -62,19 +62,11 @@ export class Todo {
 
       return null;
     });
-
-    validate(path.description, ({ value }) => {
-      if (value().trim().length === 0) {
-        return requiredError();
-      }
-
-      return null;
-    });
   });
 
   protected addTask() {
     const title = this.task().text.trim();
-    const description = this.task().description.trim();
+    const description = this.task().description?.trim() ?? '';
 
     this.taskList.update((tasks) => [
       ...tasks,
@@ -89,5 +81,10 @@ export class Todo {
 
   protected removeTask(id: number) {
     this.taskList.update((tasks) => tasks.filter((task) => task.id !== id));
+  }
+
+  protected updateDescription(event: Event) {
+    const value = (event.target as HTMLTextAreaElement).value;
+    this.task.update((task) => ({ ...task, description: value || undefined }));
   }
 }

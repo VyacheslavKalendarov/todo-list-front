@@ -1,13 +1,17 @@
 @if (isLoading()) {
-  <img alt="Loading..." class="loading" src="https://media.giphy.com/media/emySgWo0iBKWqni1wR/giphy.gif" />
+  <img
+    alt="Loading..."
+    class="loading"
+    src="https://media.giphy.com/media/emySgWo0iBKWqni1wR/giphy.gif"
+  />
 } @else {
   <ul class="task">
     @for (task of taskList(); track task.id) {
       <li
         (click)="selectedItemId.set(task.id)"
-        (keydown.enter)="removeTask.emit(task.id)"
+        (keydown.enter)="selectedItemId.set(task.id)"
         (removeTask)="removeTask.emit($event)"
-        [appTooltip]="task.description"
+        [appTooltip]="task.description ?? ''"
         [class.selected]="selectedItemId() === task.id"
         [task]="task"
         app-todo-list-item
@@ -19,4 +23,3 @@
     }
   </ul>
 }
-

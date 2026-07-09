@@ -5,14 +5,15 @@ import { DestroyRef, Directive, ElementRef, inject, input, Renderer2 } from '@an
   host: {
     '(mouseenter)': 'onMouseEnter()',
     '(mouseleave)': 'onMouseLeave()',
+    '(apptooltip-active)': 'onDescendantTooltipActive($event)',
   },
 })
 export class Tooltip {
-  offset = 10;
   public readonly appTooltip = input<string>('');
   public readonly placement = input<string>('bottom');
   public readonly delay = input<number>(100);
   private tooltip: HTMLElement | null = null;
+  private readonly offset = 10;
   private readonly renderer = inject(Renderer2);
   private readonly el = inject(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
@@ -27,6 +28,8 @@ export class Tooltip {
     if (!this.tooltip) {
       this.show();
     }
+
+    this.el.nativeElement.dispatchEvent(new CustomEvent('apptooltip-active', { bubbles: true }));
   }
 
   onMouseLeave() {
@@ -35,11 +38,19 @@ export class Tooltip {
     }
   }
 
+  onDescendantTooltipActive(event: Event) {
+    if (event.target !== this.el.nativeElement && this.tooltip) {
+      this.tooltip.remove();
+      this.tooltip = null;
+    }
+  }
+
   private show() {
     this.create();
     this.setPosition();
     this.tooltip?.classList.add('ng-tooltip-show');
   }
+
   private hide() {
     this.tooltip?.classList.remove('ng-tooltip-show');
     window.setTimeout(() => {

@@ -1,18 +1,27 @@
 <main class="todo-container">
   <section class="card">
     <h1>{{ title }}</h1>
-    <app-todo-list (removeTask)="removeTask($event)" [(selectedItemId)]="selectedItemId" [taskList]="taskList()" />
+    <app-todo-list
+      (removeTask)="removeTask($event)"
+      [(selectedItemId)]="selectedItemId"
+      [taskList]="taskList()"
+    />
     <form class="task-form">
       <input [formField]="taskForm.text" matInput placeholder="Enter task title" type="text" />
       <div>
         <label for="description">Описание:</label>
-        <textarea [formField]="taskForm.description" id="description" placeholder="Enter task description"></textarea>
+        <textarea
+          (input)="updateDescription($event)"
+          [value]="task().description?.trim() ?? ''"
+          id="description"
+          placeholder="Enter task description"
+        ></textarea>
       </div>
       <ui-button
         (click)="addTask()"
         [appearance]="'primary'"
-        [disabled]="taskForm.text().invalid() || taskForm.description().invalid()"
-        [title]="'Add task'"
+        [disabled]="taskForm.text().invalid()"
+        title="Add task"
       />
     </form>
   </section>
