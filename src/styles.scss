@@ -36,6 +36,7 @@ body {
   margin: 0;
   height: 100%;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -48,4 +49,27 @@ body {
 ul {
   list-style: none;
   padding: 0;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+}
+
+.ng-tooltip {
+  position: fixed;
+  z-index: 9999;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.ng-tooltip-show {
+  opacity: 1;
 }

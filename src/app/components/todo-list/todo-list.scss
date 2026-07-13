@@ -13,6 +13,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #dcdcdc;
+  }
+}
+
+.selected {
+  background-color: rgb(80 241 53 / 0.48);
 }
 
 .loading {

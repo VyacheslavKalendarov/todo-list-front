@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { form, FormField, requiredError, validate } from '@angular/forms/signals';
 import { MatInput } from '@angular/material/input';
 import { Task } from '../../models/task.model';
@@ -14,18 +14,45 @@ import { Button } from '../../shared/ui/button/button';
 export class Todo {
   protected readonly title = 'To-Do List';
 
+  protected selectedItemId = signal<number | null>(null);
+
   protected readonly task = signal<Task>({
     id: 0,
     text: '',
+    description: '',
   });
 
   protected readonly taskList = signal<Task[]>([
-    { id: 1, text: 'Learn Angular' },
-    { id: 2, text: 'Learn React' },
-    { id: 3, text: 'Learn Vue' },
-    { id: 4, text: 'Learn Svelte' },
-    { id: 5, text: 'Learn TypeScript' },
+    {
+      id: 1,
+      text: 'Learn Angular',
+      description: 'Обучение Ангулар',
+    },
+    {
+      id: 2,
+      text: 'Learn React',
+      description: 'Обучение Реакт',
+    },
+    {
+      id: 3,
+      text: 'Learn Vue',
+      description: 'Обучение вью',
+    },
+    {
+      id: 4,
+      text: 'Learn Svelte',
+      description: 'Обучение свелт',
+    },
+    {
+      id: 5,
+      text: 'Learn TypeScript',
+      description: 'Обучение тайпскрипт',
+    },
   ]);
+
+  protected selectedTask = computed(
+    () => this.taskList().find((task) => task.id === this.selectedItemId()) ?? null,
+  );
 
   protected readonly taskForm = form(this.task, (path) => {
     validate(path.text, ({ value }) => {
@@ -38,17 +65,26 @@ export class Todo {
   });
 
   protected addTask() {
-    const description = this.task().text.trim();
-    if (!description) return;
+    const title = this.task().text.trim();
+    const description = this.task().description?.trim() ?? '';
 
     this.taskList.update((tasks) => [
       ...tasks,
-      { id: Math.max(0, ...tasks.map((task) => task.id)) + 1, text: description },
+      {
+        id: Math.max(0, ...tasks.map((task) => task.id)) + 1,
+        text: title,
+        description: description,
+      },
     ]);
-    this.task.set({ id: 0, text: '' });
+    this.task.set({ id: 0, text: '', description: '' });
   }
 
   protected removeTask(id: number) {
     this.taskList.update((tasks) => tasks.filter((task) => task.id !== id));
+  }
+
+  protected updateDescription(event: Event) {
+    const value = (event.target as HTMLTextAreaElement).value;
+    this.task.update((task) => ({ ...task, description: value || undefined }));
   }
 }
