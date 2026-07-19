@@ -10,7 +10,8 @@
       <li
         (click)="selectedItemId.set(task.id)"
         (keydown.enter)="selectedItemId.set(task.id)"
-        (removeTask)="removeTask.emit($event)"
+        (removeTaskRequest)="removeTask.emit($event)"
+        (updateTaskRequest)="updateTask.emit($event)"
         [appTooltip]="task.description ?? ''"
         [class.selected]="selectedItemId() === task.id"
         [task]="task"

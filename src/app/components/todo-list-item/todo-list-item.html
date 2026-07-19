@@ -1,3 +1,12 @@
-{{ task().text }}
+@if (isEditing()) {
+  <input (input)="onInput($event)" [value]="editValue()" />
+  <ui-button (click)="saveEdit()" [appearance]="'primary'" title="Save" />
+} @else {
+  <span (dblclick)="startEdit()">{{ task().text }}</span>
+}
 
-<ui-button (click)="removeTask.emit(task().id)" [appearance]="'primary-destructive'" [title]="'Delete'"></ui-button>
+<ui-button
+  (click)="removeTaskRequest.emit(task().id)"
+  [appearance]="'primary-destructive'"
+  [title]="'Delete'"
+></ui-button>
