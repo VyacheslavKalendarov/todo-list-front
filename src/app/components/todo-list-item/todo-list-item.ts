@@ -7,6 +7,7 @@ import { Button } from '../../shared/ui/button/button';
   selector: 'li[app-todo-list-item]',
   templateUrl: './todo-list-item.html',
   imports: [Button],
+  styleUrl: './todo-list-item.scss',
 })
 export class TodoListItem {
   public readonly task = input.required<Task>();
