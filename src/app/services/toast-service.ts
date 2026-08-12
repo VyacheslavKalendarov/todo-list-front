@@ -1,13 +1,27 @@
 import { Service, signal } from '@angular/core';
 
+interface Toast {
+  readonly id: number;
+  readonly text: string;
+}
+
 @Service()
 export class ToastService {
-  public readonly messages = signal<string[]>([]);
+  private nextId = 0;
+  private readonly messagesState = signal<Toast[]>([]);
 
-  public showToast(message: string): void {
-    this.messages.update((messages) => [...messages, message]);
+  public readonly messages = this.messagesState.asReadonly();
+
+  public showToast(text: string): void {
+    const toast: Toast = {
+      id: this.nextId++,
+      text,
+    };
+
+    this.messagesState.update((messages) => [...messages, toast]);
+
     setTimeout(() => {
-      this.messages.update((messages) => messages.filter((m) => m !== message));
+      this.messagesState.update((messages) => messages.filter(({ id }) => id !== toast.id));
     }, 1500);
   }
 }

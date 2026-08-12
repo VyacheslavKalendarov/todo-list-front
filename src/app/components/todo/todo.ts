@@ -14,13 +14,20 @@ import { ToastService } from '../../services/toast-service';
   styleUrl: './todo.scss',
 })
 export class Todo {
+  private readonly todoStorage = inject(TodoStorage);
+  private readonly toastService = inject(ToastService);
+
   protected readonly title = 'To-Do List';
+
   protected selectedItemId = signal<number | null>(null);
   protected readonly task = signal<Task>({
     id: 0,
     text: '',
     description: '',
   });
+
+  protected readonly taskList = this.todoStorage.tasks;
+
   protected readonly taskForm = form(this.task, (path) => {
     validate(path.text, ({ value }) => {
       if (value().trim().length === 0) {
@@ -30,21 +37,22 @@ export class Todo {
       return null;
     });
   });
-  private readonly todoStorage = inject(TodoStorage);
-  protected readonly taskList = this.todoStorage.tasks;
+
   protected selectedTask = computed(
     () => this.taskList().find((task) => task.id === this.selectedItemId()) ?? null,
   );
-  private readonly toastService = inject(ToastService);
 
   protected addTask() {
-    this.todoStorage.addTask(this.task().text, this.task().description);
+    const { text, description } = this.task();
+    const trimmedDescription = description?.trim();
+
+    this.todoStorage.addTask(text.trim(), trimmedDescription || undefined);
     this.task.set({ id: 0, text: '', description: '' });
     this.toastService.showToast('Task added!');
   }
 
-  protected updateTask(id: number, description: string): void {
-    this.todoStorage.updateTask(id, description);
+  protected updateTask(id: number, text: string): void {
+    this.todoStorage.updateTask(id, text);
     this.toastService.showToast('Task updated!');
   }
 

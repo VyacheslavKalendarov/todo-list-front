@@ -36,7 +36,11 @@ export class TodoStorage {
   public addTask(task: string, description?: string): void {
     this._tasks.update((tasks) => [
       ...tasks,
-      { id: Math.max(0, ...tasks.map((task) => task.id)) + 1, text: task, description },
+      {
+        id: Math.max(0, ...tasks.map((task) => task.id)) + 1,
+        text: task,
+        description,
+      },
     ]);
   }
 

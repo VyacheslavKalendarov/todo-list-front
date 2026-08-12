@@ -8,16 +8,16 @@
   <ul class="task">
     @for (task of taskList(); track task.id) {
       <li
+        app-todo-list-item
+        class="task-item"
+        tabindex="0"
+        [appTooltip]="task.description ?? ''"
+        [class.selected]="selectedItemId() === task.id"
+        [task]="task"
         (click)="selectedItemId.set(task.id)"
         (keydown.enter)="selectedItemId.set(task.id)"
         (removeTaskRequest)="removeTask.emit($event)"
         (updateTaskRequest)="updateTask.emit($event)"
-        [appTooltip]="task.description ?? ''"
-        [class.selected]="selectedItemId() === task.id"
-        [task]="task"
-        app-todo-list-item
-        class="task-item"
-        tabindex="0"
       ></li>
     } @empty {
       <li>No tasks yet</li>

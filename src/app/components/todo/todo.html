@@ -2,27 +2,27 @@
   <section class="card">
     <h1>{{ title }}</h1>
     <app-todo-list
+      [taskList]="taskList()"
+      [(selectedItemId)]="selectedItemId"
       (removeTask)="removeTask($event)"
       (updateTask)="updateTask($event.id, $event.text)"
-      [(selectedItemId)]="selectedItemId"
-      [taskList]="taskList()"
     />
     <form class="task-form">
-      <input [formField]="taskForm.text" matInput placeholder="Enter task title" type="text" />
+      <input matInput placeholder="Enter task title" type="text" [formField]="taskForm.text" />
       <div>
         <label for="description">Описание:</label>
         <textarea
-          (input)="updateDescription($event)"
-          [value]="task().description?.trim() ?? ''"
           id="description"
           placeholder="Enter task description"
+          [value]="task().description?.trim() ?? ''"
+          (input)="updateDescription($event)"
         ></textarea>
       </div>
       <ui-button
-        (click)="addTask()"
+        title="Add task"
         [appearance]="'primary'"
         [disabled]="taskForm.text().invalid()"
-        title="Add task"
+        (click)="addTask()"
       />
     </form>
   </section>

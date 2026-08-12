@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, effect, ElementRef, input, output, signal, viewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { Button } from '../../shared/ui/button/button';
 
@@ -17,13 +17,27 @@ export class TodoListItem {
   protected isEditing = signal(false);
   protected editValue = signal('');
 
+  private readonly editInput = viewChild<ElementRef<HTMLInputElement>>('editInput');
+
+  constructor() {
+    effect(() => {
+      this.editInput()?.nativeElement.focus();
+    });
+  }
+
   protected startEdit(): void {
     this.editValue.set(this.task().text);
     this.isEditing.set(true);
   }
 
   protected saveEdit(): void {
-    this.updateTaskRequest.emit({ id: this.task().id, text: this.editValue() });
+    const text = this.editValue().trim();
+
+    if (text.length === 0) {
+      return;
+    }
+
+    this.updateTaskRequest.emit({ id: this.task().id, text });
     this.isEditing.set(false);
   }
 
