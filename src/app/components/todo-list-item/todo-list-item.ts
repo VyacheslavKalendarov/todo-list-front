@@ -14,8 +14,8 @@ export class TodoListItem {
   public readonly removeTaskRequest = output<number>();
   public readonly updateTaskRequest = output<{ id: number; text: string }>();
 
-  protected isEditing = signal(false);
-  protected editValue = signal('');
+  protected readonly isEditing = signal(false);
+  protected readonly editValue = signal('');
 
   private readonly editInput = viewChild<ElementRef<HTMLInputElement>>('editInput');
 

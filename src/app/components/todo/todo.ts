@@ -19,7 +19,7 @@ export class Todo {
 
   protected readonly title = 'To-Do List';
 
-  protected selectedItemId = signal<number | null>(null);
+  protected readonly selectedItemId = signal<number | null>(null);
   protected readonly task = signal<Task>({
     id: 0,
     text: '',
@@ -38,7 +38,7 @@ export class Todo {
     });
   });
 
-  protected selectedTask = computed(
+  protected readonly selectedTask = computed(
     () => this.taskList().find((task) => task.id === this.selectedItemId()) ?? null,
   );
 

@@ -32,6 +32,28 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
+      '@typescript-eslint/member-ordering': [
+        'error',
+        {
+          classes: {
+            memberTypes: ['field', 'constructor', 'method'],
+            order: 'as-written',
+          },
+        },
+      ],
+
+      '@angular-eslint/prefer-signals': [
+        'error',
+        {
+          preferReadonlySignalProperties: true,
+          preferInputSignals: true,
+          preferQuerySignals: true,
+          useTypeChecking: false,
+          additionalSignalCreationFunctions: [],
+        },
+      ],
+
+      '@angular-eslint/prefer-output-readonly': 'error',
     },
   },
   {
