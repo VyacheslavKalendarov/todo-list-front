@@ -32,11 +32,48 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
+      '@typescript-eslint/member-ordering': [
+        'error',
+        {
+          classes: {
+            memberTypes: ['field', 'constructor', 'method'],
+            order: 'as-written',
+          },
+        },
+      ],
+
+      '@angular-eslint/prefer-signals': [
+        'error',
+        {
+          preferReadonlySignalProperties: true,
+          preferInputSignals: true,
+          preferQuerySignals: true,
+          useTypeChecking: false,
+          additionalSignalCreationFunctions: [],
+        },
+      ],
+
+      '@angular-eslint/prefer-output-readonly': 'error',
     },
   },
   {
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-    rules: {},
+    rules: {
+      '@angular-eslint/template/attributes-order': [
+        'error',
+        {
+          alphabetical: true,
+          order: [
+            'STRUCTURAL_DIRECTIVE',
+            'TEMPLATE_REFERENCE',
+            'ATTRIBUTE_BINDING',
+            'INPUT_BINDING',
+            'TWO_WAY_BINDING',
+            'OUTPUT_BINDING',
+          ],
+        },
+      ],
+    },
   },
 ]);

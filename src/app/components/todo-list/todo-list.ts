@@ -12,8 +12,9 @@ import { Tooltip } from '../../directives/tooltip';
 export class TodoList implements OnInit {
   public readonly taskList = input.required<Task[]>();
   public readonly removeTask = output<number>();
-  public selectedItemId = model<number | null>(null);
-  protected isLoading = signal(true);
+  public readonly selectedItemId = model<number | null>(null);
+  public readonly updateTask = output<{ id: number; text: string }>();
+  protected readonly isLoading = signal(true);
 
   ngOnInit(): void {
     setTimeout(() => {
