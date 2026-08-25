@@ -23,7 +23,9 @@
         [appearance]="'primary'"
         [disabled]="taskForm.text().invalid()"
         (click)="addTask()"
-      />
+      >
+        Add task
+      </ui-button>
     </form>
   </section>
   <aside class="task-details">{{ selectedTask()?.description }}</aside>

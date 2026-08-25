@@ -5,7 +5,9 @@
     [appearance]="'primary'"
     [disabled]="editValue().trim().length === 0"
     (click)="saveEdit()"
-  />
+  >
+    Save
+  </ui-button>
 } @else {
   <span (dblclick)="startEdit()">{{ task().text }}</span>
 }
@@ -15,4 +17,5 @@
   [appearance]="'primary-destructive'"
   [title]="'Удалить задачу'"
   (click)="removeTaskRequest.emit(task().id)"
-></ui-button>
+  >Удалить задачу
+</ui-button>
