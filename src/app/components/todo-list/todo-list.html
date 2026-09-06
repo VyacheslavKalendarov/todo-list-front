@@ -1,9 +1,5 @@
 @if (isLoading()) {
-  <img
-    alt="Loading..."
-    class="loading"
-    src="https://media.giphy.com/media/emySgWo0iBKWqni1wR/giphy.gif"
-  />
+  <ui-loading-spinner label="Loading tasks..." />
 } @else {
   <ul class="task">
     @for (task of taskList(); track task.id) {

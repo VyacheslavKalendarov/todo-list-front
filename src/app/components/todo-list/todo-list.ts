@@ -2,12 +2,13 @@ import { Component, input, model, OnInit, output, signal } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
 import { Tooltip } from '../../directives/tooltip';
+import { LoadingSpinner } from '../../shared/ui/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
-  imports: [TodoListItem, Tooltip],
+  imports: [TodoListItem, Tooltip, LoadingSpinner],
 })
 export class TodoList implements OnInit {
   public readonly taskList = input.required<Task[]>();
