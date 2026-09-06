@@ -1,5 +1,5 @@
 import { Service, signal } from '@angular/core';
-import { Task } from '../models/task.model';
+import { Task, TaskStatus } from '../models/task.model';
 
 @Service()
 export class TodoStorage {
@@ -8,26 +8,31 @@ export class TodoStorage {
       id: 1,
       text: 'Learn Angular',
       description: 'Обучение Ангулар',
+      status: TaskStatus.InProgress,
     },
     {
       id: 2,
       text: 'Learn React',
       description: 'Обучение Реакт',
+      status: TaskStatus.Completed,
     },
     {
       id: 3,
       text: 'Learn Vue',
       description: 'Обучение вью',
+      status: TaskStatus.Completed,
     },
     {
       id: 4,
       text: 'Learn Svelte',
       description: 'Обучение свелт',
+      status: TaskStatus.InProgress,
     },
     {
       id: 5,
       text: 'Learn TypeScript',
       description: 'Обучение тайпскрипт',
+      status: TaskStatus.InProgress,
     },
   ]);
 
@@ -40,6 +45,7 @@ export class TodoStorage {
         id: Math.max(0, ...tasks.map((task) => task.id)) + 1,
         text: task,
         description,
+        status: TaskStatus.InProgress,
       },
     ]);
   }
@@ -51,6 +57,12 @@ export class TodoStorage {
   public updateTask(id: number, newText: string): void {
     this._tasks.update((tasks) =>
       tasks.map((task) => (task.id === id ? { ...task, text: newText } : task)),
+    );
+  }
+
+  public updateTaskStatus(id: number, status: TaskStatus): void {
+    this._tasks.update((tasks) =>
+      tasks.map((task) => (task.id === id ? { ...task, status } : task)),
     );
   }
 }

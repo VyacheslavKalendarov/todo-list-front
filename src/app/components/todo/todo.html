@@ -1,4 +1,21 @@
 <main class="todo-container">
+  <aside class="task-details">
+    @if (selectedTask(); as selected) {
+      <h2>{{ selected.text }}</h2>
+      <p>{{ selected.description || 'Описание не указано' }}</p>
+      <label>
+        <input
+          #statusCheckbox
+          type="checkbox"
+          [checked]="selected.status === TaskStatus.Completed"
+          (change)="updateTaskStatus(selected.id, statusCheckbox.checked)"
+        />
+        Выполнена
+      </label>
+    } @else {
+      <p>Выберите задачу из списка</p>
+    }
+  </aside>
   <section class="card">
     <h1>{{ title }}</h1>
     <app-todo-list
@@ -28,5 +45,4 @@
       </ui-button>
     </form>
   </section>
-  <aside class="task-details">{{ selectedTask()?.description }}</aside>
 </main>

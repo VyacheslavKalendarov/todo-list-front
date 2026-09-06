@@ -1,6 +1,6 @@
 .todo-container {
   display: grid;
-  grid-template-columns: minmax(420px, 560px) minmax(320px, 1fr);
+  grid-template-columns: minmax(320px, 1fr) minmax(420px, 560px);
   align-items: start;
   gap: 2rem;
   max-width: 1120px;

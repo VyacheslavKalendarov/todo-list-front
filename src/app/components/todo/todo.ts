@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { form, FormField, requiredError, validate } from '@angular/forms/signals';
 import { MatInput } from '@angular/material/input';
-import { Task } from '../../models/task.model';
+import { Task, TaskStatus } from '../../models/task.model';
 import { TodoList } from '../todo-list/todo-list';
 import { Button } from '../../shared/ui/button/button';
 import { TodoStorage } from '../../services/todo-storage';
@@ -17,6 +17,7 @@ export class Todo {
   private readonly todoStorage = inject(TodoStorage);
   private readonly toastService = inject(ToastService);
 
+  protected readonly TaskStatus = TaskStatus;
   protected readonly title = 'To-Do List';
 
   protected readonly selectedItemId = signal<number | null>(null);
@@ -24,6 +25,7 @@ export class Todo {
     id: 0,
     text: '',
     description: '',
+    status: TaskStatus.InProgress,
   });
 
   protected readonly taskList = this.todoStorage.tasks;
@@ -47,13 +49,20 @@ export class Todo {
     const trimmedDescription = description?.trim();
 
     this.todoStorage.addTask(text.trim(), trimmedDescription || undefined);
-    this.task.set({ id: 0, text: '', description: '' });
+    this.task.set({ id: 0, text: '', description: '', status: TaskStatus.InProgress });
     this.toastService.showToast('Task added!');
   }
 
   protected updateTask(id: number, text: string): void {
     this.todoStorage.updateTask(id, text);
     this.toastService.showToast('Task updated!');
+  }
+
+  protected updateTaskStatus(id: number, isCompleted: boolean): void {
+    const status = isCompleted ? TaskStatus.Completed : TaskStatus.InProgress;
+
+    this.todoStorage.updateTaskStatus(id, status);
+    this.toastService.showToast('Task status updated!');
   }
 
   protected removeTask(id: number) {
