@@ -4,7 +4,6 @@ import { type TypeOption } from '../../type.option';
 import { Tooltip } from '../../../directives/tooltip';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ui-button',
   templateUrl: './button.html',
   styleUrl: './button.scss',

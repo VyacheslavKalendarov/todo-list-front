@@ -1,56 +1,62 @@
-import { Service, signal } from '@angular/core';
-import { Task } from '../models/task.model';
+import { inject, Service, signal } from '@angular/core';
+import { CreateTaskData, Task, TaskStatus } from '../models/task.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 @Service()
 export class TodoStorage {
-  private readonly _tasks = signal<Task[]>([
-    {
-      id: 1,
-      text: 'Learn Angular',
-      description: 'Обучение Ангулар',
-    },
-    {
-      id: 2,
-      text: 'Learn React',
-      description: 'Обучение Реакт',
-    },
-    {
-      id: 3,
-      text: 'Learn Vue',
-      description: 'Обучение вью',
-    },
-    {
-      id: 4,
-      text: 'Learn Svelte',
-      description: 'Обучение свелт',
-    },
-    {
-      id: 5,
-      text: 'Learn TypeScript',
-      description: 'Обучение тайпскрипт',
-    },
-  ]);
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = 'http://localhost:3000/tasks';
+
+  private readonly _tasks = signal<Task[]>([]);
 
   public readonly tasks = this._tasks.asReadonly();
 
-  public addTask(task: string, description?: string): void {
-    this._tasks.update((tasks) => [
-      ...tasks,
-      {
-        id: Math.max(0, ...tasks.map((task) => task.id)) + 1,
-        text: task,
-        description,
-      },
-    ]);
+  public loadTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.apiUrl).pipe(tap((tasks) => this._tasks.set(tasks)));
   }
 
-  public removeTask(id: number): void {
-    this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
+  public addTask(data: CreateTaskData): Observable<Task> {
+    return this.http
+      .post<Task>(this.apiUrl, {
+        ...data,
+        status: TaskStatus.InProgress,
+      })
+      .pipe(
+        tap((createdTask) => {
+          this._tasks.update((tasks) => [...tasks, createdTask]);
+        }),
+      );
   }
 
-  public updateTask(id: number, newText: string): void {
-    this._tasks.update((tasks) =>
-      tasks.map((task) => (task.id === id ? { ...task, text: newText } : task)),
+  public removeTask(id: string): Observable<Task> {
+    return this.http.delete<Task>(`${this.apiUrl}/${encodeURIComponent(id)}`).pipe(
+      tap(() => {
+        this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
+      }),
+    );
+  }
+
+  public updateTask(id: string, newName: string): Observable<Task> {
+    return this.http
+      .patch<Task>(`${this.apiUrl}/${encodeURIComponent(id)}`, {
+        name: newName,
+      })
+      .pipe(
+        tap((updatedTask) => {
+          this._tasks.update((tasks) =>
+            tasks.map((task) => (task.id === id ? { ...task, name: updatedTask.name } : task)),
+          );
+        }),
+      );
+  }
+  public updateTaskStatus(id: string, status: TaskStatus): Observable<Task> {
+    return this.http.patch<Task>(`${this.apiUrl}/${encodeURIComponent(id)}`, { status }).pipe(
+      tap((updatedTask) => {
+        this._tasks.update((tasks) =>
+          tasks.map((task) => (task.id === id ? { ...task, status: updatedTask.status } : task)),
+        );
+      }),
     );
   }
 }

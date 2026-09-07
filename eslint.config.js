@@ -28,7 +28,7 @@ module.exports = defineConfig([
         'error',
         {
           type: 'element',
-          prefix: 'app',
+          prefix: ['app', 'ui'],
           style: 'kebab-case',
         },
       ],
@@ -63,7 +63,7 @@ module.exports = defineConfig([
       '@angular-eslint/template/attributes-order': [
         'error',
         {
-          alphabetical: true,
+          alphabetical: false,
           order: [
             'STRUCTURAL_DIRECTIVE',
             'TEMPLATE_REFERENCE',

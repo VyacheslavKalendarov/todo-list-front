@@ -1,5 +1,16 @@
+export enum TaskStatus {
+  InProgress = 'InProgress',
+  Completed = 'Completed',
+}
+
 export interface Task {
-  id: number;
-  text: string;
+  id: string;
+  name: string;
   description?: string;
+  status: TaskStatus;
+}
+
+export interface CreateTaskData {
+  name: string;
+  description: string;
 }

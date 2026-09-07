@@ -1,30 +1,74 @@
 <main class="todo-container">
+  <aside class="task-details">
+    @if (selectedTask(); as selected) {
+      <h2>{{ selected.name }}</h2>
+      <p>{{ selected.description || 'Описание не указано' }}</p>
+      <label>
+        <input
+          type="checkbox"
+          [checked]="selected.status === TaskStatus.Completed"
+          [disabled]="isTaskActionPending()"
+          (click)="updateTaskStatus(selected.id, $event)"
+        />
+        Выполнена
+      </label>
+
+      @if (isUpdatingStatus()) {
+        <p role="status">Сохраняем статус...</p>
+      }
+
+      @if (statusError(); as errorMessage) {
+        <p role="alert">{{ errorMessage }}</p>
+      }
+    } @else {
+      <p>Выберите задачу из списка</p>
+    }
+  </aside>
   <section class="card">
     <h1>{{ title }}</h1>
-    <app-todo-list
-      [taskList]="taskList()"
-      [(selectedItemId)]="selectedItemId"
-      (removeTask)="removeTask($event)"
-      (updateTask)="updateTask($event.id, $event.text)"
-    />
-    <form class="task-form">
-      <input matInput placeholder="Enter task title" type="text" [formField]="taskForm.text" />
-      <div>
-        <label for="description">Описание:</label>
-        <textarea
-          id="description"
-          placeholder="Enter task description"
-          [value]="task().description?.trim() ?? ''"
-          (input)="updateDescription($event)"
-        ></textarea>
-      </div>
-      <ui-button
-        title="Add task"
-        [appearance]="'primary'"
-        [disabled]="taskForm.text().invalid()"
-        (click)="addTask()"
+    <div class="status-filter">
+      <label for="status-filter">Статус:</label>
+
+      <select
+        #statusSelect
+        id="status-filter"
+        [value]="statusFilter() ?? ''"
+        (change)="changeStatusFilter(statusSelect.value)"
+      >
+        <option value="">ALL</option>
+        <option [value]="TaskStatus.InProgress">В работе</option>
+        <option [value]="TaskStatus.Completed">Завершённые</option>
+      </select>
+    </div>
+
+    @if (loadError(); as errorMessage) {
+      <p role="alert">{{ errorMessage }}</p>
+    } @else {
+      <app-todo-list
+        [taskList]="filteredTasks()"
+        [isLoading]="isLoading()"
+        [updatingTaskId]="updatingTaskId()"
+        [deletingTaskId]="deletingTaskId()"
+        [isDisabled]="isTaskActionPending()"
+        [(selectedItemId)]="selectedItemId"
+        (removeTask)="removeTask($event)"
+        (updateTask)="updateTask($event.id, $event.name)"
       />
-    </form>
+
+      @if (updateError(); as errorMessage) {
+        <p role="alert">{{ errorMessage }}</p>
+      }
+
+      @if (deleteError(); as errorMessage) {
+        <p role="alert">{{ errorMessage }}</p>
+      }
+      @if (!isLoading()) {
+        <app-todo-create-item [isSubmitting]="isCreating()" (createTask)="addTask($event)" />
+
+        @if (createError(); as errorMessage) {
+          <p role="alert">{{ errorMessage }}</p>
+        }
+      }
+    }
   </section>
-  <aside class="task-details">{{ selectedTask()?.description }}</aside>
 </main>
