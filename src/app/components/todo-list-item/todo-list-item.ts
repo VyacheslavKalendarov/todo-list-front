@@ -11,8 +11,11 @@ import { Button } from '../../shared/ui/button/button';
 })
 export class TodoListItem {
   public readonly task = input.required<Task>();
-  public readonly removeTaskRequest = output<number>();
-  public readonly updateTaskRequest = output<{ id: number; text: string }>();
+  public readonly isSaving = input(false);
+  public readonly isDisabled = input(false);
+  public readonly isDeleting = input(false);
+  public readonly removeTaskRequest = output<string>();
+  public readonly updateTaskRequest = output<{ id: string; name: string }>();
 
   protected readonly isEditing = signal(false);
   protected readonly editValue = signal('');
@@ -26,19 +29,38 @@ export class TodoListItem {
   }
 
   protected startEdit(): void {
-    this.editValue.set(this.task().text);
-    this.isEditing.set(true);
-  }
-
-  protected saveEdit(): void {
-    const text = this.editValue().trim();
-
-    if (text.length === 0) {
+    if (this.isDisabled()) {
       return;
     }
 
-    this.updateTaskRequest.emit({ id: this.task().id, text });
+    this.editValue.set(this.task().name);
+    this.isEditing.set(true);
+  }
+
+  public finishEditing(): void {
     this.isEditing.set(false);
+  }
+
+  protected saveEdit(): void {
+    if (this.isDisabled()) {
+      return;
+    }
+
+    const name = this.editValue().trim();
+
+    if (name.length === 0) {
+      return;
+    }
+
+    if (name === this.task().name) {
+      this.finishEditing();
+      return;
+    }
+
+    this.updateTaskRequest.emit({
+      id: this.task().id,
+      name,
+    });
   }
 
   protected onInput(e: Event): void {

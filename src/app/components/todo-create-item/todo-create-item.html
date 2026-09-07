@@ -1,0 +1,26 @@
+<form class="task-form" novalidate (submit)="submit($event)">
+  <label for="task-name">Название:</label>
+  <input
+    matInput
+    id="task-name"
+    type="text"
+    placeholder="Enter task title"
+    [formField]="taskForm.name"
+  />
+
+  <label for="task-description">Описание:</label>
+  <textarea
+    id="task-description"
+    placeholder="Enter task description"
+    [formField]="taskForm.description"
+  ></textarea>
+
+  <ui-button
+    title="Add task"
+    appearance="primary"
+    type="submit"
+    [disabled]="isSubmitting() || taskForm().invalid()"
+  >
+    {{ isSubmitting() ? 'Adding...' : 'Add task' }}
+  </ui-button>
+</form>

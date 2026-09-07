@@ -10,13 +10,16 @@
         [appTooltip]="task.description ?? ''"
         [class.selected]="selectedItemId() === task.id"
         [task]="task"
+        [isSaving]="updatingTaskId() === task.id"
+        [isDeleting]="deletingTaskId() === task.id"
+        [isDisabled]="isDisabled()"
         (click)="selectedItemId.set(task.id)"
         (keydown.enter)="selectedItemId.set(task.id)"
         (removeTaskRequest)="removeTask.emit($event)"
         (updateTaskRequest)="updateTask.emit($event)"
       ></li>
     } @empty {
-      <li>No tasks yet</li>
+      <li>Нет задач для отображения</li>
     }
   </ul>
 }

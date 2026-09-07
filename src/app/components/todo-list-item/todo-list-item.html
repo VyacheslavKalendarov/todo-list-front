@@ -1,21 +1,30 @@
 @if (isEditing()) {
-  <input #editInput [value]="editValue()" (input)="onInput($event)" />
+  <input
+    #editInput
+    aria-label="Название задачи"
+    [value]="editValue()"
+    [disabled]="isDisabled()"
+    (input)="onInput($event)"
+  />
+
   <ui-button
     title="Save"
     [appearance]="'primary'"
-    [disabled]="editValue().trim().length === 0"
+    [disabled]="isDisabled() || editValue().trim().length === 0"
     (click)="saveEdit()"
   >
-    Save
+    {{ isSaving() ? 'Saving...' : 'Save' }}
   </ui-button>
 } @else {
-  <span (dblclick)="startEdit()">{{ task().text }}</span>
+  <span (dblclick)="startEdit()">{{ task().name }}</span>
 }
 
 <ui-button
   class="delete-button"
   [appearance]="'primary-destructive'"
   [title]="'Удалить задачу'"
+  [disabled]="isDisabled()"
   (click)="removeTaskRequest.emit(task().id)"
-  >Удалить задачу
+>
+  {{ isDeleting() ? 'Удаляем...' : 'Удалить задачу' }}
 </ui-button>

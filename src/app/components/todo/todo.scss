@@ -16,12 +16,6 @@
   flex: 2;
 }
 
-.task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
 .task-details {
   padding: 24px;
   align-self: center;
@@ -29,4 +23,11 @@
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+.status-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
